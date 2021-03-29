@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  py:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ".:/app"
+    ports:
+      - "5000:5000"
+    restart: on-failure
+    networks:
+      - py
+
+networks:
+  py:

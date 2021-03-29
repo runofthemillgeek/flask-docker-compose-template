@@ -1,0 +1,20 @@
+FROM python:buster
+
+WORKDIR /app
+
+COPY . .
+
+# fnm is an npm pkg manager written in Rust
+SHELL ["/bin/bash", "--login", "-c"] 
+RUN curl -fsSL https://fnm.vercel.app/install | bash
+
+# Installs the latest LTS release
+RUN fnm install --lts
+RUN npm i -g nodemon
+
+RUN pip install -r requirements.txt
+
+EXPOSE 5000
+
+# --host is required because of how stuff works: https://pythonspeed.com/articles/docker-connection-refused/
+CMD nodemon --ext json,py,txt --exec "python -m flask run --host 0.0.0.0"
